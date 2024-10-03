@@ -1,6 +1,8 @@
 package com.motivank.accounts.service.impl;
 
 import com.motivank.accounts.dto.CustomerDto;
+import com.motivank.accounts.entity.Customer;
+import com.motivank.accounts.mapper.CustomerMapper;
 import com.motivank.accounts.repository.AccountsRepository;
 import com.motivank.accounts.repository.CustomerRepository;
 import com.motivank.accounts.service.IAccountsService;
@@ -17,7 +19,8 @@ public class AccountsServiceImpl implements IAccountsService {
 
     @Override
     public void createAccount(CustomerDto customerDto) {
-        // Business logic to create account
+        Customer customer = CustomerMapper.toEntity(customerDto);
+        customerRepository.save(customer);
     }
 
 
