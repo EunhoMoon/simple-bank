@@ -2,6 +2,7 @@ package com.motivank.accounts.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,5 +24,12 @@ public class Customer extends BaseEntity {
 
     @Column(name = "mobile_number")
     private String mobileNumber;
+
+    @Builder
+    private Customer(String name, String email, String mobileNumber) {
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+    }
 
 }
