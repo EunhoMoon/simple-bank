@@ -1,5 +1,6 @@
 package com.motivank.accounts.entity;
 
+import com.motivank.accounts.dto.CustomerDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,6 +35,14 @@ public class Customer extends BaseEntity {
         this.mobileNumber = mobileNumber;
         this.setCreatedBy(createdBy);
         this.setCreatedAt(LocalDateTime.now());
+    }
+
+    public CustomerDto toDto(Customer customer) {
+        return new CustomerDto(
+                customer.getName(),
+                customer.getEmail(),
+                customer.getMobileNumber()
+        );
     }
 
 }

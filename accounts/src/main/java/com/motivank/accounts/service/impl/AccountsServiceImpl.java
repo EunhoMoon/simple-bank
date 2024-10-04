@@ -5,7 +5,6 @@ import com.motivank.accounts.dto.CustomerDto;
 import com.motivank.accounts.entity.Accounts;
 import com.motivank.accounts.entity.Customer;
 import com.motivank.accounts.exception.CustomerAlreadyExistsException;
-import com.motivank.accounts.mapper.CustomerMapper;
 import com.motivank.accounts.repository.AccountsRepository;
 import com.motivank.accounts.repository.CustomerRepository;
 import com.motivank.accounts.service.AccountsService;
@@ -25,7 +24,7 @@ public class AccountsServiceImpl implements AccountsService {
     @Override
     public void createAccount(CustomerDto customerDto) {
         checkCustomerAlreadyExists(customerDto);
-        var customer = CustomerMapper.toEntity(customerDto, "Anonymous");
+        var customer = customerDto.toEntity(customerDto, "Anonymous");
         var savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
     }

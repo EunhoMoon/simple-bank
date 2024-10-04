@@ -1,5 +1,6 @@
 package com.motivank.accounts.entity;
 
+import com.motivank.accounts.dto.AccountsDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,4 +42,13 @@ public class Accounts extends BaseEntity {
         this.setCreatedBy(createdBy);
         this.setCreatedAt(LocalDateTime.now());
     }
+
+    public AccountsDto toDto(Accounts accounts) {
+        return new AccountsDto(
+                accounts.getAccountNumber(),
+                accounts.getAccountType(),
+                accounts.getBranchAddress()
+        );
+    }
+
 }
