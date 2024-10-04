@@ -5,6 +5,7 @@ import com.motivank.accounts.dto.CustomerDto;
 import com.motivank.accounts.entity.Accounts;
 import com.motivank.accounts.entity.Customer;
 import com.motivank.accounts.exception.CustomerAlreadyExistsException;
+import com.motivank.accounts.exception.ResourceNotFoundException;
 import com.motivank.accounts.repository.AccountsRepository;
 import com.motivank.accounts.repository.CustomerRepository;
 import com.motivank.accounts.service.AccountsService;
@@ -23,19 +24,38 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public void createAccount(CustomerDto customerDto) {
-        checkCustomerAlreadyExists(customerDto);
-        var customer = customerDto.toEntity(customerDto, "Anonymous");
-        var savedCustomer = customerRepository.save(customer);
-        accountsRepository.save(createNewAccount(savedCustomer));
-    }
-
-    private void checkCustomerAlreadyExists(CustomerDto customerDto) {
         customerRepository.findByMobileNumber(customerDto.getMobileNumber())
                 .ifPresent(customer -> {
                     throw new CustomerAlreadyExistsException(
                             "Customer already registered with given mobile number: " + customerDto.getMobileNumber()
                     );
                 });
+
+        var customer = customerDto.toEntity("Anonymous");
+        var savedCustomer = customerRepository.save(customer);
+        accountsRepository.save(createNewAccount(savedCustomer));
+    }
+
+    @Override
+    public CustomerDto fetchAccountDetails(String mobileNumber) {
+        var findCustomer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer",
+                        "mobileNumber",
+                        mobileNumber
+                ));
+
+        var findAccount = accountsRepository.findByCustomerId(findCustomer.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Account",
+                        "customerId",
+                        findCustomer.getCustomerId().toString()
+                ));
+
+        var findCustomerDto = findCustomer.toDto();
+        findCustomerDto.setAccounts(findAccount.toDto());
+
+        return findCustomerDto;
     }
 
     private Accounts createNewAccount(Customer customer) {

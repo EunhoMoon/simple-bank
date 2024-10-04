@@ -37,11 +37,11 @@ public class Customer extends BaseEntity {
         this.setCreatedAt(LocalDateTime.now());
     }
 
-    public CustomerDto toDto(Customer customer) {
+    public CustomerDto toDto() {
         return new CustomerDto(
-                customer.getName(),
-                customer.getEmail(),
-                customer.getMobileNumber()
+                this.name,
+                this.email,
+                this.mobileNumber
         );
     }
 

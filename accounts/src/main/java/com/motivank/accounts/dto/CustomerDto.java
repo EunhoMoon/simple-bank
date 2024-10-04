@@ -1,11 +1,9 @@
 package com.motivank.accounts.dto;
 
 import com.motivank.accounts.entity.Customer;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class CustomerDto {
 
     private String name;
@@ -14,13 +12,28 @@ public class CustomerDto {
 
     private String mobileNumber;
 
-    public Customer toEntity(CustomerDto customerDto, String createdBy) {
+    private AccountsDto accountsDto;
+
+    public CustomerDto(
+            String name,
+            String email,
+            String mobileNumber
+    ) {
+        this.name = name;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+    }
+
+    public Customer toEntity(String createdBy) {
         return Customer.builder()
-                .name(customerDto.getName())
-                .email(customerDto.getEmail())
-                .mobileNumber(customerDto.getMobileNumber())
+                .name(this.name)
+                .email(this.email)
+                .mobileNumber(this.mobileNumber)
                 .createdBy(createdBy)
                 .build();
     }
 
+    public void setAccounts(AccountsDto accountsDto) {
+        this.accountsDto = accountsDto;
+    }
 }

@@ -43,11 +43,11 @@ public class Accounts extends BaseEntity {
         this.setCreatedAt(LocalDateTime.now());
     }
 
-    public AccountsDto toDto(Accounts accounts) {
+    public AccountsDto toDto() {
         return new AccountsDto(
-                accounts.getAccountNumber(),
-                accounts.getAccountType(),
-                accounts.getBranchAddress()
+                this.accountNumber,
+                this.accountType,
+                this.branchAddress
         );
     }
 

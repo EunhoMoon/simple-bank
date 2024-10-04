@@ -14,11 +14,11 @@ public class AccountsDto {
 
     private String branchAddress;
 
-    public Accounts toEntity(AccountsDto accountsDto) {
+    public Accounts toEntity() {
         return Accounts.builder()
-                .accountNumber(accountsDto.getAccountNumer())
-                .accountType(accountsDto.getAccountType())
-                .branchAddress(accountsDto.getBranchAddress())
+                .accountNumber(this.accountNumer)
+                .accountType(this.accountType)
+                .branchAddress(this.branchAddress)
                 .build();
     }
 
