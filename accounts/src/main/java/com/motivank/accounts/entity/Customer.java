@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,10 +28,12 @@ public class Customer extends BaseEntity {
     private String mobileNumber;
 
     @Builder
-    private Customer(String name, String email, String mobileNumber) {
+    private Customer(String name, String email, String mobileNumber, String createdBy) {
         this.name = name;
         this.email = email;
         this.mobileNumber = mobileNumber;
+        this.setCreatedBy(createdBy);
+        this.setCreatedAt(LocalDateTime.now());
     }
 
 }

@@ -2,7 +2,7 @@ package com.motivank.accounts.service;
 
 import com.motivank.accounts.dto.CustomerDto;
 
-public interface IAccountsService {
+public interface AccountsService {
 
     void createAccount(CustomerDto customerDto);
 

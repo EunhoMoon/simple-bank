@@ -13,11 +13,12 @@ public class CustomerMapper {
         return customerDto;
     }
 
-    public static Customer toEntity(CustomerDto customerDto) {
+    public static Customer toEntity(CustomerDto customerDto, String createdBy) {
         return Customer.builder()
             .name(customerDto.getName())
             .email(customerDto.getEmail())
             .mobileNumber(customerDto.getMobileNumber())
+            .createdBy(createdBy)
             .build();
     }
 
