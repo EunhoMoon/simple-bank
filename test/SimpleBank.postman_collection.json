@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "9ab06a9a-51bd-4e9b-bb76-ec1017a73e9a",
+		"name": "SimpleBank",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19192246"
+	},
+	"item": [
+		{
+			"name": "CreateAccount",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"email\": \"jd@test.com\",\r\n    \"mobileNumber\": \"1231234123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8999/api/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8999",
+					"path": [
+						"api",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FetchAccountDetails",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8999/api/accounts?mobileNumber=1231234123",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8999",
+					"path": [
+						"api",
+						"accounts"
+					],
+					"query": [
+						{
+							"key": "mobileNumber",
+							"value": "1231234123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateAccount",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"email\": \"j-d@test.com\",\r\n    \"mobileNumber\": \"1231234123\",\r\n    \"accountsDto\": {\r\n        \"accountNumer\": 1228970664,\r\n        \"accountType\": \"Savings\",\r\n        \"branchAddress\": \"123 Main Street, New York\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8999/api/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8999",
+					"path": [
+						"api",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
