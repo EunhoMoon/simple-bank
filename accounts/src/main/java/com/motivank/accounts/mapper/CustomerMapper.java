@@ -6,11 +6,11 @@ import com.motivank.accounts.entity.Customer;
 public class CustomerMapper {
 
     public static CustomerDto toDto(Customer customer) {
-        CustomerDto customerDto = new CustomerDto();
-        customerDto.setName(customer.getName());
-        customerDto.setEmail(customer.getEmail());
-        customerDto.setMobileNumber(customer.getMobileNumber());
-        return customerDto;
+        return new CustomerDto(
+            customer.getName(),
+            customer.getEmail(),
+            customer.getMobileNumber()
+        );
     }
 
     public static Customer toEntity(CustomerDto customerDto, String createdBy) {
