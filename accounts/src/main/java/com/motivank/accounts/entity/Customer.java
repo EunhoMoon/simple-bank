@@ -45,4 +45,9 @@ public class Customer extends BaseEntity {
         );
     }
 
+    public void updateDetails(CustomerDto customerDto) {
+        this.name = customerDto.getName();
+        this.email = customerDto.getEmail();
+        this.mobileNumber = customerDto.getMobileNumber();
+    }
 }

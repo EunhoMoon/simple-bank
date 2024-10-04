@@ -11,11 +11,13 @@ import com.motivank.accounts.repository.CustomerRepository;
 import com.motivank.accounts.service.AccountsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AccountsServiceImpl implements AccountsService {
 
     private final AccountsRepository accountsRepository;
@@ -23,6 +25,7 @@ public class AccountsServiceImpl implements AccountsService {
     private final CustomerRepository customerRepository;
 
     @Override
+    @Transactional
     public void createAccount(CustomerDto customerDto) {
         customerRepository.findByMobileNumber(customerDto.getMobileNumber())
                 .ifPresent(customer -> {
@@ -56,6 +59,36 @@ public class AccountsServiceImpl implements AccountsService {
         findCustomerDto.setAccounts(findAccount.toDto());
 
         return findCustomerDto;
+    }
+
+    @Override
+    @Transactional
+    public boolean updateAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+
+        var accountsDto = customerDto.getAccountsDto();
+
+        if (accountsDto != null) {
+            var findAccount = accountsRepository.findById(accountsDto.getAccountNumer())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Account",
+                            "accountNumber",
+                            accountsDto.getAccountNumer().toString()
+                    ));
+            findAccount.updateDetails(accountsDto);
+
+            var customerId = findAccount.getCustomerId();
+            var findCustomer = customerRepository.findById(customerId)
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Customer",
+                            "customerId",
+                            customerId.toString()
+                    ));
+            findCustomer.updateDetails(customerDto);
+            isUpdated = true;
+        }
+
+        return isUpdated;
     }
 
     private Accounts createNewAccount(Customer customer) {

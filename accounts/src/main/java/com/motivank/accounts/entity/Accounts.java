@@ -51,4 +51,8 @@ public class Accounts extends BaseEntity {
         );
     }
 
+    public void updateDetails(AccountsDto accountsDto) {
+        this.accountType = accountsDto.getAccountType();
+        this.branchAddress = accountsDto.getBranchAddress();
+    }
 }
