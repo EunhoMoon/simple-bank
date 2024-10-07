@@ -32,15 +32,12 @@ public class Accounts extends BaseEntity {
             Long customerId,
             Long accountNumber,
             String accountType,
-            String branchAddress,
-            String createdBy
+            String branchAddress
     ) {
         this.customerId = customerId;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
         this.branchAddress = branchAddress;
-        this.setCreatedBy(createdBy);
-        this.setCreatedAt(LocalDateTime.now());
     }
 
     public AccountsDto toDto() {

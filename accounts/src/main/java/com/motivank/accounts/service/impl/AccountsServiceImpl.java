@@ -34,7 +34,7 @@ public class AccountsServiceImpl implements AccountsService {
                     );
                 });
 
-        var customer = customerDto.toEntity("Anonymous");
+        var customer = customerDto.toEntity();
         var savedCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(savedCustomer));
     }
@@ -115,7 +115,6 @@ public class AccountsServiceImpl implements AccountsService {
                 .accountNumber(randomAccountNumber)
                 .accountType(AccountsConstants.SAVINGS)
                 .branchAddress(AccountsConstants.ADDRESS)
-                .createdBy("Anonymous")
                 .build();
     }
 

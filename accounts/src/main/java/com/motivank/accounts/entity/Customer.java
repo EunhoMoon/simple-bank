@@ -29,12 +29,10 @@ public class Customer extends BaseEntity {
     private String mobileNumber;
 
     @Builder
-    private Customer(String name, String email, String mobileNumber, String createdBy) {
+    private Customer(String name, String email, String mobileNumber) {
         this.name = name;
         this.email = email;
         this.mobileNumber = mobileNumber;
-        this.setCreatedBy(createdBy);
-        this.setCreatedAt(LocalDateTime.now());
     }
 
     public CustomerDto toDto() {
