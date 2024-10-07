@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AccountsDto {
 
-    private Long accountNumer;
+    private Long accountNumber;
 
     private String accountType;
 
@@ -17,7 +17,7 @@ public class AccountsDto {
     public Accounts toEntity(Long customerId, String createdBy) {
         return Accounts.builder()
                 .customerId(customerId)
-                .accountNumber(this.accountNumer)
+                .accountNumber(this.accountNumber)
                 .accountType(this.accountType)
                 .branchAddress(this.branchAddress)
                 .createdBy(createdBy)

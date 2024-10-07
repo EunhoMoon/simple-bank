@@ -69,11 +69,11 @@ public class AccountsServiceImpl implements AccountsService {
         var accountsDto = customerDto.getAccountsDto();
 
         if (accountsDto != null) {
-            var findAccount = accountsRepository.findById(accountsDto.getAccountNumer())
+            var findAccount = accountsRepository.findById(accountsDto.getAccountNumber())
                     .orElseThrow(() -> new ResourceNotFoundException(
                             "Account",
                             "accountNumber",
-                            accountsDto.getAccountNumer().toString()
+                            accountsDto.getAccountNumber().toString()
                     ));
             findAccount.updateDetails(accountsDto);
 
@@ -91,6 +91,22 @@ public class AccountsServiceImpl implements AccountsService {
         return isUpdated;
     }
 
+    @Override
+    @Transactional
+    public boolean deleteAccount(String mobileNumber) {
+        var findCustomer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer",
+                        "mobileNumber",
+                        mobileNumber
+                ));
+
+        accountsRepository.deleteByCustomerId(findCustomer.getCustomerId());
+        customerRepository.deleteById(findCustomer.getCustomerId());
+
+        return true;
+    }
+
     private Accounts createNewAccount(Customer customer) {
         long randomAccountNumber = 1000000000L + new Random().nextInt(900000000);
 
@@ -102,4 +118,5 @@ public class AccountsServiceImpl implements AccountsService {
                 .createdBy("Anonymous")
                 .build();
     }
+
 }
