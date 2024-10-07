@@ -56,7 +56,7 @@ public class AccountsServiceImpl implements AccountsService {
                 ));
 
         var findCustomerDto = findCustomer.toDto();
-        findCustomerDto.setAccounts(findAccount.toDto());
+        findCustomerDto.setAccountsDto(findAccount.toDto());
 
         return findCustomerDto;
     }
