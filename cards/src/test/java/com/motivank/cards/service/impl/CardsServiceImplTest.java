@@ -19,10 +19,10 @@ import static org.assertj.core.api.Assertions.*;
 class CardsServiceImplTest {
 
     @Autowired
-    private CardsServiceImpl cardsService;
+    CardsServiceImpl cardsService;
 
     @Autowired
-    private CardsRepository cardsRepository;
+    CardsRepository cardsRepository;
 
     @AfterEach
     void tearDown() {
