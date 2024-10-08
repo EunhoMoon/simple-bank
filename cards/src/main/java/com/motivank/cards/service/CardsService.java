@@ -8,7 +8,7 @@ public interface CardsService {
 
     CardsDto getCard(String mobileNumber);
 
-    boolean updateCard(String mobileNumber, Long amount);
+    boolean updateCard(CardsDto cardsDto);
 
     boolean deleteCard(String mobileNumber);
 

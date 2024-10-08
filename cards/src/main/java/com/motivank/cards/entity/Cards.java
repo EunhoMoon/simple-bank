@@ -1,5 +1,6 @@
 package com.motivank.cards.entity;
 
+import com.motivank.cards.dto.CardsDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -66,5 +67,11 @@ public class Cards extends BaseEntity {
             .amountUsed(0)
             .availableAmount(NEW_CARD_LIMIT)
             .build();
+    }
+
+    public void update(CardsDto cardsDto) {
+        this.totalLimit = cardsDto.getTotalLimit();
+        this.amountUsed = cardsDto.getAmountUsed();
+        this.availableAmount = cardsDto.getAvailableAmount();
     }
 }
