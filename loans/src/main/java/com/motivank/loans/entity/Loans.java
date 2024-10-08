@@ -1,5 +1,6 @@
 package com.motivank.loans.entity;
 
+import com.motivank.loans.constants.LoansConstants;
 import com.motivank.loans.dto.LoansDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -8,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Random;
+
+import static com.motivank.loans.constants.LoansConstants.*;
 
 @Entity
 @Getter
@@ -57,10 +60,10 @@ public class Loans extends BaseEntity {
         return Loans.builder()
                 .mobileNumber(mobileNumber)
                 .loanNumber(String.valueOf(100000000000L + new Random().nextInt(900000000)))
-                .loanType("Personal Loan")
-                .totalLoan(100000)
+                .loanType(HOME_LOAN)
+                .totalLoan(NEW_LOAN_LIMIT)
                 .amountPaid(0)
-                .outstandingAmount(100000)
+                .outstandingAmount(NEW_LOAN_LIMIT)
                 .build();
     }
 
