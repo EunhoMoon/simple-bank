@@ -1,0 +1,40 @@
+services:
+  accounts:
+    build: ./accounts
+    ports:
+      - "8999:8999"
+    container_name: accounts
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - backend
+
+  cards:
+    build: ./cards
+    ports:
+      - "8998:8998"
+    container_name: cards
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - backend
+
+  loans:
+    build: ./loans
+    ports:
+      - "8997:8997"
+    container_name: loans
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
