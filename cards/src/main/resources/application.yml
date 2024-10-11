@@ -2,30 +2,13 @@ server:
   port: 8998
 
 spring:
+  application:
+    name: cards
   profiles:
-    default: local
-
----
-spring:
+    active: prod
   config:
-    activate:
-      on-profile: local
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      enabled: true
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+    import: "configserver:http://localhost:8071/"
+
 
 ---
 spring:

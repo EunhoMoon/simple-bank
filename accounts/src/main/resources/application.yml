@@ -2,29 +2,28 @@ server:
   port: 8999
 
 spring:
+  application:
+    name: accounts
   profiles:
-    default: local
+    active: prod
   config:
-    import:
-      - "application_test.yml"
+    import: "configserver:http://localhost:8071/"
+
 
 ---
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: test
   datasource:
     url: jdbc:h2:mem:testdb
     driverClassName: org.h2.Driver
     username: sa
     password: ''
-  h2:
-    console:
-      enabled: true
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
