@@ -1,39 +1,91 @@
 services:
-  accounts:
-    build: ./accounts
+  rabbitmq:
+    image: rabbitmq:3-management
     ports:
-      - "8999:8999"
-    container_name: accounts
+      - "5672:5672"
+      - "15672:15672"
+    container_name: rabbitmq
     deploy:
       resources:
         limits:
           memory: 700m
     networks:
       - backend
+
+  config-server:
+    build: ./configserver
+    ports:
+      - "8071:8071"
+    container_name: config-server
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      SPRING_RABBITMQ_HOST: "rabbitmq"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8071/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+
+  accounts:
+    build: ./accounts
+    ports:
+      - "8999:8999"
+    container_name: accounts
+    depends_on:
+      config-server:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - backend
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
+      SPRING_RABBITMQ_HOST: "rabbitmq"
 
   cards:
     build: ./cards
     ports:
       - "8998:8998"
     container_name: cards
+    depends_on:
+      config-server:
+        condition: service_healthy
     deploy:
       resources:
         limits:
           memory: 700m
     networks:
       - backend
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
+      SPRING_RABBITMQ_HOST: "rabbitmq"
 
   loans:
     build: ./loans
     ports:
       - "8997:8997"
     container_name: loans
+    depends_on:
+      config-server:
+        condition: service_healthy
     deploy:
       resources:
         limits:
           memory: 700m
     networks:
       - backend
+    environment:
+      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
+      SPRING_RABBITMQ_HOST: "rabbitmq"
 
 networks:
   backend:
