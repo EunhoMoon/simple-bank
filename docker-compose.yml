@@ -48,8 +48,8 @@ services:
     networks:
       - backend
     environment:
-      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
       SPRING_RABBITMQ_HOST: "rabbitmq"
+      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
 
   cards:
     build: ./cards
