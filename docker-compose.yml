@@ -10,32 +10,42 @@ services:
       service: microservice-base-config
 
   accounts-db:
-    image: mysql
     container_name: accounts-db
     ports:
       - "3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 10
-      interval: 10s
-      start_period: 10s
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: accounts
     extends:
       file: common-config.yml
-      service: microservice-base-config
+      service: microservice-database-config
+
+  cards-db:
+    container_name: cards-db
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: cards
+    extends:
+      file: common-config.yml
+      service: microservice-database-config
+
+  loans-db:
+    container_name: loans-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: loans
+    extends:
+      file: common-config.yml
+      service: microservice-database-config
 
   config-server:
     build: ./configserver
     ports:
       - "8071:8071"
     container_name: config-server
-    environment:
-      SPRING_RABBITMQ_HOST: "rabbitmq"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8071/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8071/actuator/health" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -50,45 +60,45 @@ services:
     ports:
       - "8999:8999"
     container_name: accounts
-    depends_on:
-      config-server:
-        condition: service_healthy
     environment:
-      SPRING_RABBITMQ_HOST: "rabbitmq"
-      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
+      SPRING_APPLICATION_NAME: accounts
+      SPRING_DATASOURCE_URL: jdbc:mysql://accounts-db:3306/accounts
+    depends_on:
+      accounts-db:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-base-config
+      service: microservice-config-server-config
 
   cards:
     build: ./cards
     ports:
       - "8998:8998"
     container_name: cards
-    depends_on:
-      config-server:
-        condition: service_healthy
     environment:
-      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
-      SPRING_RABBITMQ_HOST: "rabbitmq"
+      SPRING_APPLICATION_NAME: cards
+      SPRING_DATASOURCE_URL: jdbc:mysql://cards-db:3306/cards
+    depends_on:
+      cards-db:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-base-config
+      service: microservice-config-server-config
 
   loans:
     build: ./loans
     ports:
       - "8997:8997"
     container_name: loans
-    depends_on:
-      config-server:
-        condition: service_healthy
     environment:
-      SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
-      SPRING_RABBITMQ_HOST: "rabbitmq"
+      SPRING_APPLICATION_NAME: loans
+      SPRING_DATASOURCE_URL: jdbc:mysql://loans-db:3306/loans
+    depends_on:
+      loans-db:
+        condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-base-config
+      service: microservice-config-server-config
 
 networks:
   backend:
