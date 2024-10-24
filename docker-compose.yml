@@ -54,6 +54,26 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
+  eureka-server:
+    build: ./eurekaserver
+    ports:
+      - "8761:8761"
+    container_name: eureka-server
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      config-server:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: eurekaserver
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:8071/
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
 
   accounts:
     build: ./accounts
