@@ -78,7 +78,7 @@ public class CardsController {
             )
     })
     @GetMapping
-    public ResponseEntity<CardsDto> getCard(
+    public ResponseEntity<CardsDto> fetchCardDetails(
             @RequestParam
             @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number should be a 10-digit number")
             String mobileNumber
