@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: gatewayserver
+  config:
+    import: "${SPRING_CONFIG_IMPORT:configserver:http://localhost:8071/}"
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: gatewayserver
+    description: "Gateway Server"
+    version: 1.0.0
