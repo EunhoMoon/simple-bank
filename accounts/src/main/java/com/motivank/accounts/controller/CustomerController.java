@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/customer", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/customer", produces = {MediaType.APPLICATION_JSON_VALUE})
 @Tag(
     name = "CRUD REST APIs for Customers in SimpleBank",
     description = "CRUD REST APIs for managing customer accounts in SimpleBank"
