@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final LoansFeignClient loansFeignClient;
 
     @Override
-    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber) {
+    public CustomerDetailsDto fetchCustomerDetails(String mobileNumber, String correlationId) {
         var customer = customerRepository.findByMobileNumber(mobileNumber)
             .orElseThrow(() -> new ResourceNotFoundException(
                 "Customer",
@@ -38,8 +38,8 @@ public class CustomerServiceImpl implements CustomerService {
                 "customerId",
                 customer.getCustomerId().toString()
             ));
-        var cardsDto = cardsFeignClient.fetchCardDetails(mobileNumber).getBody();
-        var loansDto = loansFeignClient.fetchLoanDetails(mobileNumber).getBody();
+        var cardsDto = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber).getBody();
+        var loansDto = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber).getBody();
 
         return CustomerDetailsDto.of(customer.toDto(), accounts.toDto(), cardsDto, loansDto);
     }

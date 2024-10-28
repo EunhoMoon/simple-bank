@@ -60,6 +60,12 @@ info:
     description: "Accounts Microservice"
     version: 1.0.0
 
+logging:
+  level:
+    com:
+      motivank:
+        accounts: DEBUG
+
 ---
 spring:
   config:

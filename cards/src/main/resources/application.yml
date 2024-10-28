@@ -60,6 +60,12 @@ info:
     description: "Cards Microservice"
     version: 1.0.0
 
+logging:
+  level:
+    com:
+      motivank:
+        cards: DEBUG
+
 ---
 spring:
   config:
