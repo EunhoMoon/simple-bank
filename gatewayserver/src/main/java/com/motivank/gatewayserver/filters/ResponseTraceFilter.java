@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import reactor.core.publisher.Mono;
 
+import static com.motivank.gatewayserver.filters.FilterUtility.*;
+
 @Configuration
 public class ResponseTraceFilter {
 
@@ -26,7 +28,8 @@ public class ResponseTraceFilter {
                 HttpHeaders headers = exchange.getRequest().getHeaders();
                 String correlationId = filterUtility.getCorrelationId(headers);
                 logger.debug("Response ID: {}", correlationId);
-                exchange.getResponse().getHeaders().add(filterUtility.CORRELATION_ID, correlationId);
+                exchange.getResponse().getHeaders().add(
+                    CORRELATION_ID, correlationId);
             }));
     }
 
