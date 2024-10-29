@@ -12,8 +12,6 @@ FROM openjdk:17-jdk-slim
 
 MAINTAINER Motivank
 
-COPY --from=builder /app/build/libs/loans-0.0.1-SNAPSHOT.jar /app/loans.jar
+COPY --from=builder /app/build/libs/gatewayserver-0.0.1-SNAPSHOT.jar /app/gatewayserver.jar
 
-RUN apt-get update && apt-get install -y curl
-
-ENTRYPOINT ["java", "-jar", "/app/loans.jar"]
+ENTRYPOINT ["java", "-jar", "/app/gatewayserver.jar"]

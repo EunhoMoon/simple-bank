@@ -71,6 +71,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: eurekaserver
       SPRING_CONFIG_IMPORT: configserver:http://config-server:8071/
+      EUREKA_INSTANCE_HOSTNAME: eureka-server
     extends:
       file: common-config.yml
       service: microservice-base-config
@@ -80,6 +81,12 @@ services:
     ports:
       - "8999:8999"
     container_name: accounts
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8999/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     environment:
       SPRING_APPLICATION_NAME: accounts
       SPRING_DATASOURCE_URL: jdbc:mysql://accounts-db:3306/accounts
@@ -95,6 +102,12 @@ services:
     ports:
       - "8998:8998"
     container_name: cards
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8998/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     environment:
       SPRING_APPLICATION_NAME: cards
       SPRING_DATASOURCE_URL: jdbc:mysql://cards-db:3306/cards
@@ -109,12 +122,36 @@ services:
     build: ./loans
     ports:
       - "8997:8997"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8997/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     container_name: loans
     environment:
       SPRING_APPLICATION_NAME: loans
       SPRING_DATASOURCE_URL: jdbc:mysql://loans-db:3306/loans
     depends_on:
       loans-db:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: microservice-config-server-config
+
+  gatewayserver:
+    build: ./gatewayserver
+    ports:
+      - "8072:8072"
+    container_name: gatewayserver
+    environment:
+      SPRING_APPLICATION_NAME: gatewayserver
+    depends_on:
+      accounts:
+        condition: service_healthy
+      cards:
+        condition: service_healthy
+      loans:
         condition: service_healthy
     extends:
       file: common-config.yml

@@ -14,4 +14,6 @@ MAINTAINER Motivank
 
 COPY --from=builder /app/build/libs/cards-0.0.1-SNAPSHOT.jar /app/cards.jar
 
+RUN apt-get update && apt-get install -y curl
+
 ENTRYPOINT ["java", "-jar", "/app/cards.jar"]
