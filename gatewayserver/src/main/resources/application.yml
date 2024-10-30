@@ -50,3 +50,12 @@ logging:
     com:
       motivank:
         gatewayserver: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10 # 몇 개의 호출을 기반으로 실패율을 계산할 것인지
+        permitted-number-of-calls-in-half-open-state: 2 # Half open 상태에서 허용할 호출 수
+        failure-rate-threshold: 50 # 실패율이 50% 이상이면 circuit open
+        wait-duration-in-open-state: 10000 # circuit open 상태에서 대기할 시간
