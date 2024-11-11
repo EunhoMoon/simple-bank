@@ -20,13 +20,11 @@ public class CustomRouteLocatorFactory {
                 .uri("lb://ACCOUNTS"))
             .route(p -> p.path("/api/cards/**")
                 .filters(f -> f.rewritePath("/api/cards/(?<segment>.*)", "/${segment}")
-                    .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-                    .circuitBreaker(config -> config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contact-support")))
+                    .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                 .uri("lb://CARDS"))
             .route(p -> p.path("/api/loans/**")
                 .filters(f -> f.rewritePath("/api/loans/(?<segment>.*)", "/${segment}")
-                    .addResponseHeader("X-Response-Time", LocalDateTime.now().toString())
-                    .circuitBreaker(config -> config.setName("accountsCircuitBreaker").setFallbackUri("forward:/contact-support")))
+                    .addResponseHeader("X-Response-Time", LocalDateTime.now().toString()))
                 .uri("lb://LOANS"))
             .build();
     }
