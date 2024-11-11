@@ -51,6 +51,7 @@ logging:
       motivank:
         gatewayserver: DEBUG
 
+# Resilience4j Circuit Breaker 설정
 resilience4j:
   circuitbreaker:
     configs:

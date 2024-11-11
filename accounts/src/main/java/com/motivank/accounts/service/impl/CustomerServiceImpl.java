@@ -1,6 +1,8 @@
 package com.motivank.accounts.service.impl;
 
+import com.motivank.accounts.dto.CardsDto;
 import com.motivank.accounts.dto.CustomerDetailsDto;
+import com.motivank.accounts.dto.LoansDto;
 import com.motivank.accounts.exception.ResourceNotFoundException;
 import com.motivank.accounts.repository.AccountsRepository;
 import com.motivank.accounts.repository.CustomerRepository;
@@ -38,8 +40,16 @@ public class CustomerServiceImpl implements CustomerService {
                 "customerId",
                 customer.getCustomerId().toString()
             ));
-        var cardsDto = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber).getBody();
-        var loansDto = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber).getBody();
+
+
+        CardsDto cardsDto = null;
+        LoansDto loansDto = null;
+
+        var cardsResponse = cardsFeignClient.fetchCardDetails(correlationId, mobileNumber);
+        var loansResponse = loansFeignClient.fetchLoanDetails(correlationId, mobileNumber);
+
+        if (cardsResponse != null) cardsDto = cardsResponse.getBody();
+        if (loansResponse != null) loansDto = loansResponse.getBody();
 
         return CustomerDetailsDto.of(customer.toDto(), accounts.toDto(), cardsDto, loansDto);
     }
