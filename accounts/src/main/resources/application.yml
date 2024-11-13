@@ -88,6 +88,19 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 2 # Half open 상태에서 허용할 호출 수
         failure-rate-threshold: 50 # 실패율이 50% 이상이면 circuit open
         wait-duration-in-open-state: 10000 # circuit open 상태에서 대기할 시간
+  # Retry 설정
+  retry:
+    configs:
+      default:
+        max-attempts: 3 # 최대 재시도 횟수
+        wait-duration: 100 # 재시도 전 대기 시간
+        enable-exponential-backoff: true # 지수 백오프 활성화
+        exponential-backoff-multiplier: 2 # 백오프 배수
+        ignore-exceptions:
+          - java.lang.NullPointerException # 무시할 예외
+        retry-exceptions:
+          - java.util.concurrent.TimeoutException # 재시도할 예외
+
 ---
 spring:
   config:

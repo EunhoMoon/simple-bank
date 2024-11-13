@@ -5,6 +5,7 @@ import com.motivank.accounts.dto.CustomerDto;
 import com.motivank.accounts.dto.ErrorResponseDto;
 import com.motivank.accounts.dto.ResponseDto;
 import com.motivank.accounts.service.AccountsService;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -56,6 +57,7 @@ public class AccountsController {
                 .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
     }
 
+    @Retry(name="fetchAccountDetails", fallbackMethod = "fetchAccountDetailsFallback")
     @GetMapping
     @Operation(
             summary = "Fetch account details",
@@ -83,6 +85,11 @@ public class AccountsController {
             String mobileNumber
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(accountsService.fetchAccountDetails(mobileNumber));
+    }
+
+
+    public ResponseEntity<CustomerDto> fetchAccountDetailsFallback(String mobileNumber, Throwable throwable) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
 
     @PutMapping
