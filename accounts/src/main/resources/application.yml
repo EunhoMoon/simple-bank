@@ -100,7 +100,13 @@ resilience4j:
           - java.lang.NullPointerException # 무시할 예외
         retry-exceptions:
           - java.util.concurrent.TimeoutException # 재시도할 예외
-
+  # RateLimiter 설정
+  ratelimiter:
+    configs:
+      default:
+        timeout-duration: 1000
+        limit-refresh-period: 5000
+        limit-for-period: 1
 ---
 spring:
   config:
